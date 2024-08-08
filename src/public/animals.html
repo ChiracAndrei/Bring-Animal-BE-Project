@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animals</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="./animals.js"></script>
+
+  </head>
+  <body>
+    <nav id="navBtn">
+      <a href="http://localhost:3000/login.html">Log In</a>
+      <a href="http://localhost:3000/register.html">Register</a>
+      <a href="./documentation.html">Documentation</a>
+      <a href="./how_to_use.html">How to use</a>
+    </nav>
+    <div id="container">
+
+      <h1>Animals</h1>
+      <form id="animalForm">
+        <label for="animal">Animal:</label>
+        <select id="animal" name="animal">
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="fish">Fish</option>
+        </select>
+        <label for="random">Random:</label>
+        <select id="random" name="random">
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+        <label for="breed">Breed:</label>
+        <input type="text" id="breed" name="breed"><br>
+        <button type="submit">Get Animal</button>
+      </form>
+
+      <div id="animalResult"></div>
+      <form id="addAnimalForm" enctype="multipart/form-data">
+        <h2>Add Animal</h2>
+        <label for="newAnimalType">Type:</label>
+        <input type="text" id="newAnimalType" name="newAnimalType" required>
+        <label for="newBreed">Breed:</label>
+        <input type="text" id="newBreed" name="newBreed" required>
+        <label for="newImage">Image:</label>
+        <input type="file" id="newImage" name="newImage" required><br>
+        <button type="submit">Add Animal</button>
+        <p id="addErrorMessage" class="error"></p>
+      </form>
+    </div>
+  </body>
+</html>

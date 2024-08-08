@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Documentation</title>
+        <link rel="stylesheet" href="doc.css">
+        <script src="documentation.js"></script>
+    </head>
+    <body>
+        <h2>Hello, follow these steps to have a functional website.</h2>
+
+        <p>1. initialize node and install project dependencies to be able to run
+            the project on your computer
+        </p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code1">
+
+npm init
+        </code></pre>
+            <button class="copy-btn" data-target="code1">Copy the code</button>
+        </div>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code2">
+
+npm install express mysql2 dotenv bcrypt body-parser jsonwebtoken zod multer
+        </code></pre>
+            <button class="copy-btn" data-target="code2">Copy the code</button>
+        </div>
+        <p>
+            2.Run the Mysql file<u><i>( db.sql )</i></u>.
+        </p>
+        <p>
+            3.Make sure you are at the correct path and run the file
+            <i>server.js</i> to open the server and use the site.
+        </p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code3">
+
+node src/server.js
+        </code></pre>
+            <button class="copy-btn" data-target="code3">Copy the code</button>
+        </div>
+
+        <h2>What this site uses: </h2>
+        <h3>1.Express</h3>
+        <p>The Express philosophy is to provide small, robust tooling
+            for HTTP servers, making it a great solution for single page
+            applications, websites, hybrids, or public HTTP APIs.</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code4">
+
+const express = require('express')
+const app = express()
+
+app.get('/', function (req, res) {
+  res.send('Hello World')
+})
+
+app.listen(3000)
+        </code></pre>
+            <button class="copy-btn" data-target="code4">Copy the code</button>
+        </div>
+        <h3>2. MySql2</h3>
+        <p>Connection to the database and data access, respectively their
+            use</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code5">
+
+const mysql = require('mysql2');
+
+// Create the connection to database
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  database: 'test',
+});
+
+// A simple SELECT query
+connection.query(
+  'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
+  function (err, results, fields) {
+    console.log(results); // results contains rows returned by server
+    console.log(fields); // fields contains extra meta data about results, if available
+  }
+);
+
+// Using placeholders
+connection.query(
+  'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
+  ['Page', 45],
+  function (err, results) {
+    console.log(results);
+  }
+);
+        </code></pre>
+            <button class="copy-btn" data-target="code5">Copy the code</button>
+        </div>
+        <h3>3. Dotenv</h3>
+        <p>Dotenv is a zero-dependency module that loads environment variables
+            from a .env file into process.env. Storing configuration in the
+            environment separate from code is based on The Twelve-Factor App
+            methodology.</p>
+
+        <p>.env file</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code6">
+PORT= 3000
+JWT_SECRET=your_secret_key
+JWT_REFRESH_SECRET=your_refresh_secret_key
+JWT_EXPIRATION=1h
+REFRESH_TOKEN_EXPIRATION=7d
+DB_HOST=localhost
+DB_USER = root
+DB_PASSWORD = your_password
+DB_NAME= your_db
+
+        </code></pre>
+            <button class="copy-btn" data-target="code6">Copy the code</button>
+        </div>
+        <p>import in aplication</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code7">
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const PORT = process.env.PORT; 
+        </code></pre>
+            <button class="copy-btn" data-target="code7">Copy the code</button>
+        </div>
+        <h3>4.Bcrypt</h3>
+        <p>A library to help you hash passwords.</p>
+        <p>Import</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code8">
+const bcrypt = require('bcrypt');
+        </code></pre>
+            <button class="copy-btn" data-target="code8">Copy the code</button>
+        </div>
+        <p>To hash a password</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code9">
+bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
+    // Store hash in your password DB.
+});
+        </code></pre>
+            <button class="copy-btn" data-target="code9">Copy the code</button>
+        </div>
+        <p>To check a password</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code10">
+// Load hash from your password DB.
+bcrypt.compare(myPlaintextPassword, hash, function(err, result) {
+    // result == true
+});
+        </code></pre>
+            <button class="copy-btn" data-target="code10">Copy the code</button>
+        </div>
+        <h3>5. Jsonwebtoken</h3>
+        <p>Generate tokens for autentification</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code11">
+const jwt = require('jsonwebtoken');
+
+const authMiddleware = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.sendStatus(401);
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.sendStatus(401);
+        }
+        req.user = user;
+        next();
+    });
+};
+        </code></pre>
+            <button class="copy-btn" data-target="code11">Copy the code</button>
+        </div>
+        <h3>6. Zod</h3>
+        <p>Zod is a TypeScript-first schema declaration and validation library.
+            I'm using the term "schema" to broadly refer to any data type, from
+            a simple string to a complex nested object.</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code12">
+const { z } = require('zod');
+
+// creating a schema for strings
+const mySchema = z.string();
+
+// "safe" parsing (doesn't throw error if validation fails)
+mySchema.safeParse("tuna"); // => { success: true; data: "tuna" }
+mySchema.safeParse(12); // => { success: false; error: ZodError }
+
+//creating an object schema
+
+const User = z.object({
+  username: z.string(),
+});
+
+User.parse({ username: "Ludwig" });
+
+// extract the inferred type
+type User = z.infer<typeof User>;
+// { username: string }
+
+
+        </code></pre>
+            <button class="copy-btn" data-target="code12">Copy the code</button>
+        </div>
+
+        <h3>7. Multer</h3>
+        <p>Multer is a node.js middleware for handling multipart/form-data,
+            which is primarily used for uploading files. It is written on top of
+            busboy for maximum efficiency.
+
+            NOTE: Multer will not process any form which is not multipart
+            (multipart/form-data).</p>
+
+        <p>Don't forget the enctype="multipart/form-data" in your form.</p>
+        <div class="code-container">
+            <pre><code class="language-javascript" id="code13">
+
+const multer  = require('multer')
+const upload = multer({ dest: './public/data/uploads/' })
+app.post('/stats', upload.single('uploaded_file'), function (req, res) {
+   // req.file is the name of your file in the form above, here 'uploaded_file'
+   // req.body will hold the text fields, if there were any 
+   console.log(req.file, req.body)
+});
+
+        </code></pre>
+            <button class="copy-btn" data-target="code13">Copy the code</button>
+        </div>
+    </body>
+</html>
